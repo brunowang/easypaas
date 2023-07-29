@@ -3,16 +3,12 @@ package frontend
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the protoc-gen-go-gframe package it is being compiled against.
 import (
-	"encoding/json"
 	"github.com/brunowang/easypaas/mgr/pod/dto"
 	"github.com/brunowang/easypaas/mgr/pod/service"
 	"github.com/brunowang/gframe/gfhttp"
 	"github.com/brunowang/gframe/gflog"
 	"github.com/gin-gonic/gin"
-	ws "github.com/gorilla/websocket"
 	"go.uber.org/zap"
-	"net/http"
-	"sync"
 	"time"
 )
 
@@ -29,6 +25,8 @@ func (s *httpHandler) AddPod(ctx *gin.Context) {
 	if !gfhttp.BindJson(ctx, &req) {
 		return
 	}
+
+	ctx.ShouldBind(&req)
 
 	gflog.Info(ctx, "httpHandler AddPod processing")
 	nowt := time.Now()

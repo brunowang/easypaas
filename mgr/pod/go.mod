@@ -7,9 +7,11 @@ require (
 	github.com/brunowang/easypaas/pbgen v0.0.0-20230729054504-25caa6b84107
 	github.com/brunowang/gframe v0.0.0-20230729035327-f5f5932e5e1c
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-redis/redis/v7 v7.4.1
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/protobuf v1.5.3
-	github.com/gorilla/websocket v1.4.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/soheilhy/cmux v0.1.5
 	go.uber.org/zap v1.22.0
 	google.golang.org/grpc v1.57.0
@@ -19,6 +21,7 @@ require (
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
+	github.com/allegro/bigcache/v3 v3.1.0 // indirect
 	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
@@ -28,6 +31,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/gomodule/redigo v1.8.9 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect

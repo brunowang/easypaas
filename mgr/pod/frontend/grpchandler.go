@@ -9,7 +9,6 @@ import (
 	"github.com/brunowang/easypaas/pbgen/pod"
 	"github.com/brunowang/gframe/gflog"
 	"go.uber.org/zap"
-	"io"
 	"time"
 )
 

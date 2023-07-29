@@ -1,0 +1,140 @@
+package dao
+
+import (
+	"context"
+	"errors"
+	"github.com/brunowang/gframe/gfcache"
+	"github.com/go-redis/redis/v7"
+	"github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
+	"reflect"
+	"time"
+)
+
+var (
+	TableExists    = errors.New("table already exists")
+	DuplicateKey   = errors.New("duplicate entry key")
+	RecordNotFound = errors.New("record not found")
+	CacheNotFound  = errors.New("cache not found")
+)
+
+type Config struct {
+	sqlDSN string
+	rdsOpt *redis.Options
+}
+
+type Dao struct {
+	cfg     Config
+	db      *sqlx.DB
+	Pod     *PodDao
+	PodEnv  *PodEnvDao
+	PodPort *PodPortDao
+}
+
+func NewDao(dsn string) *Dao {
+	return &Dao{
+		cfg: Config{sqlDSN: dsn},
+	}
+}
+
+func (d *Dao) UseCache(opt *redis.Options) *Dao {
+	d.cfg.rdsOpt = opt
+	return d
+}
+
+func (d *Dao) Init() error {
+	db, err := sqlx.Connect("mysql", d.cfg.sqlDSN)
+	if err != nil {
+		return err
+	}
+	db.SetMaxOpenConns(20)
+	db.SetMaxIdleConns(10)
+	db.SetConnMaxLifetime(10 * time.Minute)
+	db.SetConnMaxIdleTime(5 * time.Minute)
+	d.db = db
+
+	d.Pod = NewPodDao(db)
+	d.PodEnv = NewPodEnvDao(db)
+	d.PodPort = NewPodPortDao(db)
+
+	if d.cfg.rdsOpt != nil {
+		cli := redis.NewClient(d.cfg.rdsOpt)
+		rds := gfcache.NewRedisCache(cli).Timeout(2 * time.Minute)
+		loc := gfcache.NewLocalCache(20 * time.Second)
+		cache := gfcache.NewMultiCache(loc, rds)
+
+		d.Pod.WithCache(cache)
+		d.PodEnv.WithCache(cache)
+		d.PodPort.WithCache(cache)
+	}
+
+	if err := d.EnsureTableExist(); err != nil {
+		if e, ok := err.(*mysql.MySQLError); ok && e.Number == 1050 {
+			return TableExists
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (d *Dao) EnsureTableExist() error {
+	createTableStmts := []string{podTable, podEnvTable, podPortTable}
+	for _, stmt := range createTableStmts {
+		if _, err := d.db.Exec(stmt); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (d *Dao) Tx(ctx context.Context, fn func(*sqlx.Tx) error) error {
+	tx, err := d.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	if err := fn(tx); err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+	return tx.Commit()
+}
+
+func genSqlCols(m interface{}) ([]string, []interface{}) {
+	cols, args, _ := genSqlColsWithPlaces(m)
+	return cols, args
+}
+
+func genSqlColsWithPlaces(m interface{}) ([]string, []interface{}, []string) {
+	if m == nil {
+		return nil, nil, nil
+	}
+	rval := reflect.ValueOf(m)
+	if rval.Kind() == reflect.Ptr {
+		if rval.IsNil() {
+			return nil, nil, nil
+		}
+		rval = rval.Elem()
+	}
+	var cols []string
+	var args []interface{}
+	var places []string
+	for i := 0; i < rval.NumField(); i++ {
+		vf := rval.Field(i)
+		if vf.Kind() == reflect.Ptr && vf.IsNil() {
+			continue
+		}
+		if !vf.CanInterface() {
+			continue
+		}
+		tf := rval.Type().Field(i)
+		fname := tf.Tag.Get("db")
+		if fname == "" {
+			fname = tf.Name
+		}
+		cols = append(cols, fname)
+		args = append(args, vf.Interface())
+		places = append(places, "?")
+	}
+	return cols, args, places
+}
