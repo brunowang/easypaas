@@ -10,8 +10,8 @@ github.com/allegro/bigcache/v3 v3.1.0/go.mod h1:aPyh7jEvrog9zAwx5N7+JUQX5dZTSGpx
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/brunowang/easypaas/pbgen v0.0.0-20230729054504-25caa6b84107 h1:2qwqcG59XBemrRObfz3wUd1u5GQm/qI43CsJOvOawP4=
 github.com/brunowang/easypaas/pbgen v0.0.0-20230729054504-25caa6b84107/go.mod h1:oucMON73b2weNJoLe3JuGPQvs3EfSk4+o/oVinW+5xA=
-github.com/brunowang/gframe v0.0.0-20230729035327-f5f5932e5e1c h1:tRvEA2X84KsCIK9cZh8hvL4yd9BBRvJt6cEZkFeZiXk=
-github.com/brunowang/gframe v0.0.0-20230729035327-f5f5932e5e1c/go.mod h1:V+MEdmyM19iRuwqsrshvkOV2lNLj3qGFFcnwd5q4Xcs=
+github.com/brunowang/gframe v0.0.0-20230729072312-ea84774cf7be h1:yHvgRhkusl8tXD1DVBL6oT4qbKEAMVT3x9U7FDWuB1Y=
+github.com/brunowang/gframe v0.0.0-20230729072312-ea84774cf7be/go.mod h1:V+MEdmyM19iRuwqsrshvkOV2lNLj3qGFFcnwd5q4Xcs=
 github.com/bwmarrin/snowflake v0.3.0 h1:xm67bEhkKh6ij1790JB83OujPR5CzNe8QuQqAgISZN0=
 github.com/bwmarrin/snowflake v0.3.0/go.mod h1:NdZxfVWX+oR6y2K0o6qAYv6gIOP9rjG0/E9WsDpxqwE=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=

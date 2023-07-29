@@ -76,21 +76,7 @@ func (m *PodInfo) Fill(pb *pod.PodInfo) {
 	if pb == nil {
 		return
 	}
-	m.PodInfo = pod.PodInfo{
-		Id:            pb.Id,
-		PodNamespace:  pb.PodNamespace,
-		PodName:       pb.PodName,
-		PodTeamId:     pb.PodTeamId,
-		PodCpuMax:     pb.PodCpuMax,
-		PodReplicas:   pb.PodReplicas,
-		PodMemoryMax:  pb.PodMemoryMax,
-		PodPort:       pb.PodPort,
-		PodEnv:        pb.PodEnv,
-		PodPullPolicy: pb.PodPullPolicy,
-		PodRestart:    pb.PodRestart,
-		PodType:       pb.PodType,
-		PodImage:      pb.PodImage,
-	}
+	m.PodInfo = *pb
 	return
 }
 
@@ -128,9 +114,7 @@ func (m *PodId) Fill(pb *pod.PodId) {
 	if pb == nil {
 		return
 	}
-	m.PodId = pod.PodId{
-		Id: pb.Id,
-	}
+	m.PodId = *pb
 	return
 }
 
@@ -177,6 +161,6 @@ func (m *Empty) Fill(pb *pod.Empty) {
 	if pb == nil {
 		return
 	}
-	m.Empty = pod.Empty{}
+	m.Empty = *pb
 	return
 }

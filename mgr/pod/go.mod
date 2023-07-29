@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/brunowang/easypaas/pbgen v0.0.0-20230729054504-25caa6b84107
-	github.com/brunowang/gframe v0.0.0-20230729035327-f5f5932e5e1c
+	github.com/brunowang/gframe v0.0.0-20230729072312-ea84774cf7be
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/go-sql-driver/mysql v1.7.1

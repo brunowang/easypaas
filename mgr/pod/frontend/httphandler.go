@@ -26,8 +26,6 @@ func (s *httpHandler) AddPod(ctx *gin.Context) {
 		return
 	}
 
-	ctx.ShouldBind(&req)
-
 	gflog.Info(ctx, "httpHandler AddPod processing")
 	nowt := time.Now()
 
